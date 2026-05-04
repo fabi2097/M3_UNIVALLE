@@ -1,0 +1,33 @@
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import 'express-async-errors';
+
+import morgan from 'morgan';
+
+const app = express();
+
+// middlewares
+app.use(cors());
+app.use(express.json());
+app.use(morgan('dev'));
+
+// imágenes estáticas
+app.use('/uploads', express.static('uploads'));
+
+// endpoint de prueba
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'API de notas activa' });
+});
+
+// middleware de errores global
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Error interno del servidor' });
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
