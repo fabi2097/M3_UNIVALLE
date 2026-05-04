@@ -17,4 +17,26 @@ export default class NoteService {
     async getNoteByUser(userId) {
         return await this.noteRepository.findByUserId(userId);
     }
+
+    async getNotesByUserId(userId) {
+        return await this.noteRepository.findByUserId(userId);
+    }
+
+    async getNoteById(id) {
+        const note = await this.noteRepository.findById(id);
+        if (!note) throw new Error("Note not found");
+        return note;
+    }
+
+    async updateNote(id, data) {
+        const note = await this.noteRepository.update(id, data);
+        if (!note) throw new Error("Note not found");
+        return note;
+    }
+
+    async deleteNote(id) {
+        const note = await this.noteRepository.delete(id);
+        if (!note) throw new Error("Note not found");
+        return { message: "Note deleted successfully" };
+    }
 }
